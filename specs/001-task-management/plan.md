@@ -8,7 +8,7 @@
 
 ## Summary
 
-Construir uma aplicação web monolítica e modular para gerenciamento privado de tarefas, com React e TypeScript no frontend, Node.js e TypeScript no backend e PostgreSQL como persistência. O backend concentrará autenticação, autorização, regras de tarefa e acesso ao banco; o frontend consumirá contratos HTTP explícitos. O acesso entre dispositivos usará código ou link de uso único enviado por e-mail, seguido de sessão autenticada por cookie seguro. A solução evita microserviços, ORM obrigatório e camadas cerimoniais.
+Construir uma aplicação web monolítica e modular para gerenciamento privado de tarefas, com React e TypeScript no frontend, Node.js e TypeScript no backend e PostgreSQL como persistência. O backend concentrará autenticação, autorização, regras de tarefa e acesso ao banco; o frontend consumirá contratos HTTP explícitos. O acesso entre dispositivos usará somente código de uso único enviado por e-mail, seguido de sessão autenticada por cookie seguro. A solução evita microserviços, ORM obrigatório e camadas cerimoniais.
 
 ## Technical Context
 
@@ -26,7 +26,7 @@ Construir uma aplicação web monolítica e modular para gerenciamento privado d
 
 **Performance Goals**: N/A; a spec não define metas quantitativas de latência ou volume
 
-**Constraints**: tipagem estrita; SQL parametrizado; autenticação e autorização em fronteira confiável; tokens de e-mail opacos, temporários e de uso único; cookie de sessão seguro; mensagens de login sem enumeração de contas; escopo de tarefa filtrado pelo usuário autenticado; colaboração, anexos, recorrência e notificações fora do escopo
+**Constraints**: tipagem estrita; SQL parametrizado; autenticação e autorização em fronteira confiável; códigos numéricos de e-mail opacos, temporários e de uso único; cookie de sessão seguro; mensagens de login sem enumeração de contas; escopo de tarefa filtrado pelo usuário autenticado; colaboração, anexos, recorrência, notificações e autenticação por link/magic link fora do escopo
 
 **Scale/Scope**: uma pessoa gerenciando suas próprias tarefas; volume e concorrência não foram especificados e devem permanecer proporcionais a uma primeira versão simples
 
@@ -45,7 +45,7 @@ Construir uma aplicação web monolítica e modular para gerenciamento privado d
 
 ## Decisões arquiteturais e limites da mudança
 
-**Responsabilidades alteradas**: autenticação por código/link, sessão, autorização por proprietário, casos de uso de tarefa, persistência PostgreSQL, rotas HTTP e telas React de lista/criação/estado/exclusão.
+**Responsabilidades alteradas**: autenticação exclusivamente por código, sessão, autorização por proprietário, casos de uso de tarefa, persistência PostgreSQL, rotas HTTP e telas React de lista/criação/estado/exclusão.
 
 **Responsabilidades preservadas**: colaboração, anexos, recorrência e notificações não serão modelados nem implementados nesta versão.
 

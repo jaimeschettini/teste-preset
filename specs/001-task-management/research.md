@@ -1,12 +1,12 @@
 # Research: Gerenciamento de tarefas
 
-## Autenticação por código ou link enviado por e-mail
+## Autenticação exclusivamente por código enviado por e-mail
 
-**Decision**: Usar desafio temporário enviado ao e-mail, em formato de código ou link, com valor opaco e imprevisível, uso único e invalidação do desafio anterior ao emitir um novo. Após a validação, criar sessão autenticada separada do desafio.
+**Decision**: Usar somente código temporário enviado ao e-mail, com valor opaco e imprevisível, uso único e invalidação do desafio anterior ao emitir um novo. Não haverá autenticação por link/magic link nesta versão. Após a validação, criar sessão autenticada separada do desafio.
 
-**Rationale**: O fluxo atende à decisão da spec para recuperar tarefas em diferentes dispositivos sem exigir senha. O desafio deve ser tratado como credencial temporária: armazenar apenas digest/HMAC, aplicar expiração no servidor, limitar tentativas e não registrar o segredo. A sessão deve ser um cookie opaco com `Secure`, `HttpOnly` e `SameSite` apropriado, invalidado no logout.
+**Rationale**: O fluxo atende à decisão da spec para recuperar tarefas em diferentes dispositivos sem exigir senha ou abrir tokens em URLs. O código deve ser tratado como credencial temporária: armazenar apenas digest/HMAC, aplicar expiração no servidor, limitar tentativas e não registrar o segredo. A sessão deve ser um cookie opaco com `Secure`, `HttpOnly` e `SameSite` apropriado, invalidado no logout.
 
-**Alternatives considered**: Somente link reduz atrito, mas aumenta exposição em URL; somente código reduz exposição em URL, mas exige digitação; senha e passkeys ampliam ou mudam o escopo; JWT no navegador dificulta revogação e não oferece vantagem necessária nesta aplicação.
+**Alternatives considered**: Link/magic link foi explicitamente excluído pelo produto por expor uma credencial em URL; senha e passkeys ampliam ou mudam o escopo; JWT no navegador dificulta revogação e não oferece vantagem necessária nesta aplicação.
 
 ## Privacidade e abuso no login
 

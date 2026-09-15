@@ -21,7 +21,7 @@ Erros inesperados retornam mensagem genérica e não expõem SQL, stack trace, t
 
 ### `POST /auth/request`
 
-Solicita código ou link de acesso para um endereço de e-mail.
+Solicita um código de acesso para um endereço de e-mail.
 
 Request:
 
@@ -39,15 +39,15 @@ O backend deve aplicar limites de envio e não revelar se a conta existe.
 
 ### `POST /auth/verify`
 
-Valida código ou token de link de uso único e cria sessão autenticada.
+Valida código de uso único e cria sessão autenticada.
 
 Request:
 
 ```json
-{ "email": "user@example.com", "challenge": "opaque-value" }
+{ "email": "user@example.com", "code": "123456" }
 ```
 
-Response `204` em sucesso e cookie de sessão seguro. Desafios inválidos, expirados, consumidos ou excedidos retornam erro estruturado sem revelar detalhes que permitam replay ou enumeração.
+Response `204` em sucesso e cookie de sessão seguro. Códigos inválidos, expirados, consumidos ou excedidos retornam erro estruturado sem revelar detalhes que permitam replay ou enumeração.
 
 ### `POST /auth/logout`
 

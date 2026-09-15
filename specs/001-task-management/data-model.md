@@ -34,14 +34,14 @@ Não há transição de exclusão reversível prevista; a tarefa removida não d
 
 ## EmailChallenge
 
-Representa um desafio temporário para provar controle do e-mail e iniciar uma sessão.
+Representa um código temporário para provar controle do e-mail e iniciar uma sessão. Links/magic links não são suportados.
 
 | Campo | Tipo lógico | Obrigatório | Regras |
 |------|-------------|-------------|--------|
 | id | identificador | Sim | Identifica o desafio |
 | userId | identificador | Sim | Usuário ao qual o desafio pertence |
 | secretDigest | bytes/texto protegido | Sim | Nunca armazenar o código ou token em claro |
-| kind | enum | Sim | `code` ou `link` |
+| kind | enum | Sim | Sempre `code` nesta versão |
 | expiresAt | data/hora | Sim | Após expirar, o desafio falha |
 | consumedAt | data/hora anulável | Não | Preenchido atomicamente no consumo bem-sucedido |
 | attemptCount | inteiro | Sim | Limitado para reduzir tentativas automatizadas |
