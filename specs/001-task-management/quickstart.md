@@ -21,10 +21,11 @@ Este guia valida a jornada principal conforme [data-model.md](./data-model.md) e
 
 ### Persistência e acesso entre dispositivos
 
-1. Solicitar acesso para um e-mail de teste e obter o código pelo adaptador de e-mail controlado.
-2. Validar o código e criar uma tarefa com título não vazio.
-3. Encerrar a sessão e iniciar novo acesso usando o mesmo e-mail em outro contexto de navegador/dispositivo.
-4. Verificar que a tarefa permanece listada com o estado `pending`.
+1. Solicitar acesso para um e-mail de teste ainda não cadastrado e obter o código pelo adaptador de e-mail controlado.
+2. Validar o código e verificar que o usuário é criado e autenticado.
+3. Criar uma tarefa com título não vazio.
+4. Encerrar a sessão e iniciar novo acesso usando o mesmo e-mail em outro contexto de navegador/dispositivo.
+5. Verificar que a tarefa permanece listada com o estado `pending`.
 
 ### Concluir e reabrir
 
@@ -45,8 +46,10 @@ Este guia valida a jornada principal conforme [data-model.md](./data-model.md) e
 1. Submeter título vazio e verificar validação sem criação.
 2. Reutilizar código de e-mail consumido e verificar rejeição.
 3. Usar código expirado e verificar rejeição.
-4. Tentar acessar tarefa de outro usuário e verificar ausência de autorização sem vazamento de dados.
-5. Simular falha de persistência e verificar mensagem de erro sem falso sucesso.
+4. Usar código inválido para um e-mail não cadastrado e verificar que nenhum usuário é criado.
+5. Tentar acessar tarefa de outro usuário e verificar ausência de autorização sem vazamento de dados.
+6. Simular falha de persistência durante a validação inicial e verificar que não há usuário ou sessão parcial.
+7. Simular falha de persistência e verificar mensagem de erro sem falso sucesso.
 
 ## Comandos de verificação
 

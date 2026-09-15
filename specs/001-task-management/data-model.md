@@ -39,15 +39,16 @@ Representa um código temporário para provar controle do e-mail e iniciar uma s
 | Campo | Tipo lógico | Obrigatório | Regras |
 |------|-------------|-------------|--------|
 | id | identificador | Sim | Identifica o desafio |
-| userId | identificador | Sim | Usuário ao qual o desafio pertence |
-| secretDigest | bytes/texto protegido | Sim | Nunca armazenar o código ou token em claro |
+| email | texto | Sim | E-mail normalizado solicitado; permite desafio antes da criação do usuário |
+| userId | identificador | Não | Referencia o usuário existente, quando houver; preenchido ou associado no consumo válido |
+| secretDigest | bytes/texto protegido | Sim | Nunca armazenar o código em claro |
 | kind | enum | Sim | Sempre `code` nesta versão |
 | expiresAt | data/hora | Sim | Após expirar, o desafio falha |
 | consumedAt | data/hora anulável | Não | Preenchido atomicamente no consumo bem-sucedido |
 | attemptCount | inteiro | Sim | Limitado para reduzir tentativas automatizadas |
 | createdAt | data/hora | Sim | Momento de emissão |
 
-Somente o desafio mais recente do usuário deve permanecer válido. O segredo não deve aparecer em logs, métricas, mensagens ou analytics.
+Somente o código mais recente para o e-mail normalizado deve permanecer válido. O segredo não deve aparecer em logs, métricas, mensagens ou analytics. Se o e-mail ainda não tiver `User`, o consumo válido deve criar o usuário e associá-lo ao desafio de forma atômica antes de criar a sessão.
 
 ## Session
 

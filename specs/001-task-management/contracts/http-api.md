@@ -29,7 +29,7 @@ Request:
 { "email": "user@example.com" }
 ```
 
-Response `202` para e-mails existentes ou inexistentes, com mensagem e formato equivalentes:
+Response `202` para e-mails existentes ou inexistentes, com mensagem e formato equivalentes. O código deve ser enviado nos dois casos:
 
 ```json
 { "message": "Se houver uma conta para esse endereço, enviaremos as instruções." }
@@ -39,7 +39,7 @@ O backend deve aplicar limites de envio e não revelar se a conta existe.
 
 ### `POST /auth/verify`
 
-Valida código de uso único e cria sessão autenticada.
+Valida código de uso único, cria o usuário se o e-mail ainda não estiver cadastrado e cria sessão autenticada.
 
 Request:
 
@@ -47,7 +47,7 @@ Request:
 { "email": "user@example.com", "code": "123456" }
 ```
 
-Response `204` em sucesso e cookie de sessão seguro. Códigos inválidos, expirados, consumidos ou excedidos retornam erro estruturado sem revelar detalhes que permitam replay ou enumeração.
+Response `204` em sucesso e cookie de sessão seguro. Para e-mail ainda não cadastrado, a validação bem-sucedida deve criar o usuário antes de concluir a autenticação. A validação, o consumo do código, a criação do usuário quando necessária e a criação da sessão devem ser uma operação atômica. Códigos inválidos, expirados, consumidos ou excedidos retornam erro estruturado sem criar usuário nem revelar detalhes que permitam replay ou enumeração.
 
 ### `POST /auth/logout`
 

@@ -2,15 +2,15 @@
 
 ## Autenticação exclusivamente por código enviado por e-mail
 
-**Decision**: Usar somente código temporário enviado ao e-mail, com valor opaco e imprevisível, uso único e invalidação do desafio anterior ao emitir um novo. Não haverá autenticação por link/magic link nesta versão. Após a validação, criar sessão autenticada separada do desafio.
+**Decision**: Usar somente código temporário enviado ao e-mail, com valor opaco e imprevisível, uso único e invalidação do código anterior ao emitir um novo. Não haverá autenticação por link/magic link nesta versão. Para um e-mail ainda não cadastrado, criar o usuário na mesma operação que consome com sucesso o código e cria a sessão autenticada.
 
-**Rationale**: O fluxo atende à decisão da spec para recuperar tarefas em diferentes dispositivos sem exigir senha ou abrir tokens em URLs. O código deve ser tratado como credencial temporária: armazenar apenas digest/HMAC, aplicar expiração no servidor, limitar tentativas e não registrar o segredo. A sessão deve ser um cookie opaco com `Secure`, `HttpOnly` e `SameSite` apropriado, invalidado no logout.
+**Rationale**: O fluxo atende à decisão da spec para recuperar tarefas em diferentes dispositivos sem exigir senha ou abrir tokens em URLs. O código deve ser tratado como credencial temporária: armazenar apenas digest/HMAC, aplicar expiração no servidor, limitar tentativas e não registrar o segredo. A sessão deve ser um cookie opaco com `Secure`, `HttpOnly` e `SameSite` apropriado, invalidado no logout. A criação pós-validação evita usuários não verificados e elimina estado parcial entre autenticação e provisionamento.
 
 **Alternatives considered**: Link/magic link foi explicitamente excluído pelo produto por expor uma credencial em URL; senha e passkeys ampliam ou mudam o escopo; JWT no navegador dificulta revogação e não oferece vantagem necessária nesta aplicação.
 
 ## Privacidade e abuso no login
 
-**Decision**: Solicitações para e-mails existentes e inexistentes devem retornar mensagem, status e formato equivalentes, sem confirmar a existência da conta. Reenvios devem ser limitados por conta e IP, sem bloqueio que permita negar serviço a uma conta conhecida. Falhas do provedor de e-mail devem permanecer genéricas para o solicitante e ser observáveis sem tokens.
+**Decision**: Solicitações para e-mails existentes e inexistentes devem retornar mensagem, status e formato equivalentes, sem confirmar a existência da conta. O código deve ser emitido para ambos os casos; após validação bem-sucedida, e-mails novos criam um usuário. Reenvios devem ser limitados por endereço normalizado e IP, sem bloqueio que permita negar serviço a uma conta conhecida. Falhas do provedor de e-mail devem permanecer genéricas para o solicitante e ser observáveis sem códigos.
 
 **Rationale**: Evita enumeração de contas, spam e custos inesperados. A autorização continua separada da autenticação: o backend deve validar a sessão e o proprietário da tarefa em cada requisição.
 

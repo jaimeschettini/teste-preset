@@ -16,7 +16,7 @@ Construir uma aplicação web monolítica e modular para gerenciamento privado d
 
 **Primary Dependencies**: React, runtime HTTP Node.js, cliente PostgreSQL, biblioteca de validação de entradas e ferramenta de testes a escolher na implementação
 
-**Storage**: PostgreSQL com migrações versionadas; tarefas pertencem a um usuário identificado
+**Storage**: PostgreSQL com migrações versionadas; tarefas pertencem a um usuário identificado e desafios podem existir para e-mails ainda não cadastrados até sua validação
 
 **Testing**: testes unitários de domínio/casos de uso, integração com PostgreSQL real, testes de componente/UI e poucos testes end-to-end dos fluxos críticos
 
@@ -38,7 +38,7 @@ Construir uma aplicação web monolítica e modular para gerenciamento privado d
 - **Fronteiras de confiança e segurança**: PASS — sessão, autenticação por e-mail e autorização serão validadas no backend; cada operação filtrará pelo usuário autenticado.
 - **Legibilidade e simplicidade arquitetural**: PASS — monólito modular pequeno, sem microserviços, CQRS ou arquitetura hexagonal completa.
 - **Contratos e tipagem**: PASS — entradas, respostas, estados e erros terão contratos TypeScript explícitos e validação nas bordas.
-- **Consistência / atomicidade / idempotência**: PASS — consumo de desafio será atômico; alterações de tarefa serão persistidas como operações coerentes; retries de envio serão limitados e observáveis.
+- **Consistência / atomicidade / idempotência**: PASS — consumo do código e criação do usuário no primeiro acesso serão atômicos; alterações de tarefa serão persistidas como operações coerentes; retries de envio serão limitados e observáveis.
 - **Verificação automatizada**: PASS — estratégia cobre os comportamentos CB-001, CB-002 e CB-003 com unidade, integração, UI e E2E seletivo.
 - **Responsabilidade e evidência dos agentes**: PASS — quickstart e tarefas deverão registrar comandos e resultados reais, sem declarar validações não executadas.
 - **Guardrails específicos do projeto**: PASS — nenhum guardrail adicional foi definido; a baseline de segurança e testes será preservada.
@@ -53,13 +53,13 @@ Construir uma aplicação web monolítica e modular para gerenciamento privado d
 
 **Contratos externos**: contrato HTTP documentado em `contracts/http-api.md`; provedor de e-mail é uma dependência operacional, sem contrato específico escolhido nesta fase.
 
-**Concorrência / falhas parciais**: consumo de desafio de autenticação deve invalidar o desafio em operação atômica; atualizações de tarefa devem verificar o proprietário na mesma operação; falha de persistência não pode ser apresentada como sucesso; falha de e-mail mantém resposta genérica ao solicitante e gera sinal operacional sem registrar token.
+**Concorrência / falhas parciais**: consumo de desafio de autenticação e criação do usuário no primeiro acesso devem ocorrer atomicamente; atualizações de tarefa devem verificar o proprietário na mesma operação; falha de persistência não pode ser apresentada como sucesso; falha de e-mail mantém resposta genérica ao solicitante e gera sinal operacional sem registrar código.
 
 ## Estratégia de testes e verificação *(mandatory)*
 
 | Comportamento crítico | Nível de teste | Por que este nível prova a propriedade | Evidência adicional |
 |-----------------------|----------------|----------------------------------------|---------------------|
-| CB-001 — preservação entre acessos | Integração + E2E seletivo | Integração prova mapeamento e persistência reais no PostgreSQL; E2E prova recuperação autenticada pelo fluxo visível | PostgreSQL real, cenário de novo acesso |
+| CB-001 — preservação entre acessos | Integração + E2E seletivo | Integração prova mapeamento e persistência reais no PostgreSQL; E2E prova primeiro acesso, criação pós-validação e recuperação autenticada | PostgreSQL real, cenário de novo acesso |
 | CB-002 — transição de estado | Unidade + integração + componente/UI | Unidade prova a regra de transição; integração prova gravação; UI prova apresentação e ação observáveis | Cenários pendente → concluída → pendente |
 | CB-003 — exclusão da tarefa solicitada | Integração + componente/UI + E2E seletivo | Integração prova filtro por proprietário e remoção correta; UI/E2E provam que somente a tarefa escolhida desaparece | Cenário com mais de uma tarefa |
 
@@ -73,7 +73,7 @@ Construir uma aplicação web monolítica e modular para gerenciamento privado d
 
 | Risco / modo de falha | Impacto | Mitigação / recuperação | Como verificar |
 |-----------------------|---------|-------------------------|----------------|
-| Reutilização ou vazamento de desafio de e-mail | Acesso indevido à conta | Digest/HMAC no banco, expiração, uso único, invalidação do desafio anterior, cookie seguro e remoção do token da URL | Testes de replay, expiração e inspeção de logs |
+| Reutilização ou vazamento de código de e-mail | Acesso indevido à conta | Digest/HMAC no banco, expiração, uso único, invalidação do código anterior, cookie seguro e não exposição do código | Testes de replay, expiração e inspeção de logs |
 | Enumeração de contas ou abuso de reenvio | Exposição de usuários, spam e custo | Resposta uniforme, limites por conta/IP e retries controlados | Testes de respostas equivalentes e rate limit |
 | Tarefa de outro usuário acessível por identificador | Violação de privacidade | Autorização server-side e filtro por proprietário em toda consulta/mutação | Teste de acesso cruzado |
 | Falha parcial de persistência | Interface diverge do estado real | Confirmar sucesso somente após persistência; rollback em transações | Teste de erro de banco e reconsulta |

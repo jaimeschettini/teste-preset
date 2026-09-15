@@ -23,6 +23,7 @@ Esta feature define uma aplicação web simples para uma pessoa organizar suas p
 ### Session 2026-09-15
 
 - Q: A autenticação por link/magic link deve permanecer disponível nesta versão? → A: Não; o acesso deve ocorrer somente por código enviado por e-mail.
+- Q: O que deve acontecer no primeiro acesso com um endereço de e-mail ainda não cadastrado? → A: O sistema deve enviar o código normalmente e criar o usuário após a validação bem-sucedida do código.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -39,6 +40,7 @@ Como usuário, quero criar tarefas e consultar a lista de tarefas existentes par
 1. **Given** que a lista de tarefas está disponível, **When** o usuário informa um título válido e confirma a criação, **Then** uma nova tarefa é adicionada à lista com o título informado e estado pendente.
 2. **Given** que existem tarefas cadastradas, **When** o usuário acessa a aplicação, **Then** a lista apresenta as tarefas existentes e o estado atual de cada uma.
 3. **Given** que uma tarefa foi criada, **When** o usuário acessa novamente a aplicação em outro dispositivo usando um código enviado por e-mail, **Then** a tarefa permanece disponível com seus dados e estado anteriores.
+4. **Given** que o endereço de e-mail ainda não está cadastrado, **When** o usuário solicita e valida corretamente o código recebido, **Then** o sistema cria o usuário e permite o acesso à sua lista de tarefas.
 
 ### User Story 2 - Concluir e reabrir tarefas (Priority: P2)
 
@@ -70,6 +72,7 @@ Como usuário, quero excluir tarefas que não precisam mais ser acompanhadas par
 ### Edge Cases
 
 - Quando o título não contém conteúdo, o sistema deve impedir a criação e informar o problema ao usuário.
+- Quando o código informado para um endereço ainda não cadastrado for inválido, expirado ou reutilizado, o sistema não deve criar o usuário.
 - Quando uma operação de criação, alteração ou exclusão não puder ser persistida, o sistema deve informar que a operação não foi concluída e não deve apresentar a alteração como permanente.
 - Uma tarefa concluída deve continuar podendo ser reaberta enquanto permanecer existente.
 
@@ -84,11 +87,13 @@ Como usuário, quero excluir tarefas que não precisam mais ser acompanhadas par
 - **FR-005**: O sistema DEVE permitir que o usuário reabra uma tarefa concluída, retornando-a ao estado pendente.
 - **FR-006**: O sistema DEVE permitir que o usuário exclua uma tarefa existente.
 - **FR-007**: O sistema DEVE preservar as tarefas criadas e seus estados para o acesso identificado do usuário, permitindo recuperá-las em diferentes dispositivos por meio de um código enviado por e-mail; autenticação por link/magic link não faz parte desta versão.
+- **FR-010**: No primeiro acesso com um endereço de e-mail ainda não cadastrado, o sistema DEVE enviar o código normalmente e criar o usuário somente após a validação bem-sucedida desse código.
 - **FR-008**: O sistema DEVE informar ao usuário quando uma operação solicitada não puder ser concluída ou persistida.
 - **FR-009**: A exclusão de uma tarefa DEVE ocorrer imediatamente após a solicitação do usuário, sem exigir confirmação adicional.
 
 ### Key Entities *(include if feature involves data)*
 
+- **Usuário**: Pessoa identificada pelo endereço de e-mail; no primeiro acesso, seu registro é criado somente após a validação bem-sucedida do código enviado.
 - **Tarefa**: Item que o usuário deseja acompanhar, identificado por um título e um estado que pode ser pendente ou concluído.
 
 ## Comportamentos críticos e intenção de verificação *(mandatory)*
