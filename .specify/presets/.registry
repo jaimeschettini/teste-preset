@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "presets": {
+    "ia-dev-labs": {
+      "version": "0.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:01df8cdfee1bd13b506c817672e0814534d6e4396fb52e6361810a412c7f3b69",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {},
+      "registered_skills": {
+        "copilot": [
+          "speckit-constitution",
+          "speckit-specify",
+          "speckit-tasks"
+        ]
+      },
+      "installed_at": "2026-09-14T21:05:30.021595+00:00"
+    }
+  }
+}

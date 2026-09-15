@@ -1,0 +1,78 @@
+schema_version: "1.0"
+
+preset:
+  id: "ia-dev-labs"
+  name: "IA-dev Labs Engineering"
+  version: "0.1.0"
+  description: "Guardrails de engenharia, Spec-Driven Development e verificação para projetos do IA-dev Labs."
+  author: "IA-dev Labs"
+  repository: "https://github.com/jaimeschettini/ia-dev-engineering"
+  license: "UNLICENSED"
+
+requires:
+  speckit_version: ">=1.0.5"
+
+provides:
+  templates:
+    - type: "template"
+      name: "constitution-template"
+      file: "templates/constitution-template.md"
+      description: "Constitution de projeto baseada na Constitution de Engenharia do IA-dev Labs v1.0.0"
+      replaces: "constitution-template"
+      strategy: "replace"
+
+    - type: "template"
+      name: "spec-template"
+      file: "templates/spec-template.md"
+      description: "Template de especificação com requisitos explícitos, riscos e comportamentos críticos"
+      replaces: "spec-template"
+      strategy: "replace"
+
+    - type: "template"
+      name: "plan-template"
+      file: "templates/plan-template.md"
+      description: "Template de plano com Constitution Check, arquitetura proporcional e estratégia de testes"
+      replaces: "plan-template"
+      strategy: "replace"
+
+    - type: "template"
+      name: "tasks-template"
+      file: "templates/tasks-template.md"
+      description: "Template de tarefas com implementação e verificação orientadas a risco"
+      replaces: "tasks-template"
+      strategy: "replace"
+
+    - type: "template"
+      name: "checklist-template"
+      file: "templates/checklist-template.md"
+      description: "Template de checklist para revisão da qualidade dos requisitos"
+      replaces: "checklist-template"
+      strategy: "replace"
+
+    - type: "command"
+      name: "speckit.constitution"
+      file: "commands/speckit.constitution.md"
+      description: "Preserva a base de engenharia do IA-dev Labs ao criar ou atualizar Constitutions de projeto"
+      replaces: "speckit.constitution"
+      strategy: "wrap"
+
+    - type: "command"
+      name: "speckit.specify"
+      file: "commands/speckit.specify.md"
+      description: "Impede invenção de regras de negócio e explicita limites para assumptions"
+      replaces: "speckit.specify"
+      strategy: "wrap"
+
+    - type: "command"
+      name: "speckit.tasks"
+      file: "commands/speckit.tasks.md"
+      description: "Alinha geração de tarefas à estratégia obrigatória de testes sem impor TDD"
+      replaces: "speckit.tasks"
+      strategy: "wrap"
+
+tags:
+  - "engineering"
+  - "governance"
+  - "testing"
+  - "ai-agents"
+  - "pt-br"
