@@ -18,23 +18,27 @@ Esta feature define uma aplicação web simples para uma pessoa organizar suas p
 
 ### Session 2026-09-15
 
-- Q: Como o usuário deve ser identificado para recuperar suas tarefas em diferentes dispositivos? → A: Por código ou link enviado por e-mail.
+- Q: Como o usuário deve ser identificado para recuperar suas tarefas em diferentes dispositivos? → A: Por código enviado por e-mail.
+
+### Session 2026-09-15
+
+- Q: A autenticação por link/magic link deve permanecer disponível nesta versão? → A: Não; o acesso deve ocorrer somente por código enviado por e-mail.
 
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Criar e consultar tarefas (Priority: P1)
 
-Como usuário, quero criar tarefas e consultar a lista de tarefas existentes para registrar e acompanhar o que preciso fazer, usando um código ou link enviado por e-mail para recuperar minhas tarefas em diferentes dispositivos.
+Como usuário, quero criar tarefas e consultar a lista de tarefas existentes para registrar e acompanhar o que preciso fazer, usando um código enviado por e-mail para recuperar minhas tarefas em diferentes dispositivos.
 
 **Why this priority**: Registrar e reencontrar tarefas é o valor central da aplicação e habilita os demais fluxos.
 
-**Independent Test**: Criar uma tarefa, sair da aplicação, acessar a partir de outro dispositivo usando um código ou link enviado por e-mail e verificar que a tarefa continua disponível.
+**Independent Test**: Criar uma tarefa, sair da aplicação, acessar a partir de outro dispositivo usando um código enviado por e-mail e verificar que a tarefa continua disponível.
 
 **Acceptance Scenarios**:
 
 1. **Given** que a lista de tarefas está disponível, **When** o usuário informa um título válido e confirma a criação, **Then** uma nova tarefa é adicionada à lista com o título informado e estado pendente.
 2. **Given** que existem tarefas cadastradas, **When** o usuário acessa a aplicação, **Then** a lista apresenta as tarefas existentes e o estado atual de cada uma.
-3. **Given** que uma tarefa foi criada, **When** o usuário acessa novamente a aplicação em outro dispositivo usando um código ou link enviado por e-mail, **Then** a tarefa permanece disponível com seus dados e estado anteriores.
+3. **Given** que uma tarefa foi criada, **When** o usuário acessa novamente a aplicação em outro dispositivo usando um código enviado por e-mail, **Then** a tarefa permanece disponível com seus dados e estado anteriores.
 
 ### User Story 2 - Concluir e reabrir tarefas (Priority: P2)
 
@@ -79,7 +83,7 @@ Como usuário, quero excluir tarefas que não precisam mais ser acompanhadas par
 - **FR-004**: O sistema DEVE permitir que o usuário marque uma tarefa pendente como concluída.
 - **FR-005**: O sistema DEVE permitir que o usuário reabra uma tarefa concluída, retornando-a ao estado pendente.
 - **FR-006**: O sistema DEVE permitir que o usuário exclua uma tarefa existente.
-- **FR-007**: O sistema DEVE preservar as tarefas criadas e seus estados para o acesso identificado do usuário, permitindo recuperá-las em diferentes dispositivos por meio de um código ou link enviado por e-mail.
+- **FR-007**: O sistema DEVE preservar as tarefas criadas e seus estados para o acesso identificado do usuário, permitindo recuperá-las em diferentes dispositivos por meio de um código enviado por e-mail; autenticação por link/magic link não faz parte desta versão.
 - **FR-008**: O sistema DEVE informar ao usuário quando uma operação solicitada não puder ser concluída ou persistida.
 - **FR-009**: A exclusão de uma tarefa DEVE ocorrer imediatamente após a solicitação do usuário, sem exigir confirmação adicional.
 
